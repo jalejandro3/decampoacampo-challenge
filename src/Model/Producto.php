@@ -16,9 +16,9 @@ readonly class Producto
         }
     }
 
-    public function precioEnDolares(float $tasaDolar): float
+    public function precioEnDolares(float $cotizacionDolar): float
     {
-        return round($this->precio * $tasaDolar, 2);
+        return round($this->precio / $cotizacionDolar, 2);
     }
 
     public function toArray(): array

@@ -12,7 +12,7 @@ class ProductoTest extends TestCase
     {
         $producto = ProductoMother::create();
 
-        $this->assertEquals(1.0, $producto->precioEnDolares(0.001));
+        $this->assertEquals(1.0, $producto->precioEnDolares(1000));
     }
 
     public function test_producto_precio_negativo_arroja_precio_invalido_exception()

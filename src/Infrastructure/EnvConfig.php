@@ -2,9 +2,10 @@
 
 namespace Jalejandro\DecampoacampoChallenge\Infrastructure;
 
+use Jalejandro\DecampoacampoChallenge\Application\Configuracion;
 use Jalejandro\DecampoacampoChallenge\Exception\ConfiguracionException;
 
-readonly class EnvConfig
+readonly class EnvConfig implements Configuracion
 {
     private float $precioUsd;
 

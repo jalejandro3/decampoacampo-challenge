@@ -4,7 +4,24 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
-    <testsuite name="Unit">
-        <directory>tests/Unit</directory>
-    </testsuite>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+    <php>
+        <env name="DB_HOST" value="127.0.0.1" force="true"/>
+        <env name="DB_PORT" value="3307" force="true"/>
+        <env name="DB_NAME" value="decampoacampo_test" force="true"/>
+        <env name="DB_USER" value="root" force="true"/>
+        <env name="DB_PASS" value="root" force="true"/>
+    </php>
 </phpunit>

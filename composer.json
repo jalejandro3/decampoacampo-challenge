@@ -20,5 +20,7 @@
             "name": "Jose Alejandro Alvarez Mendoza"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.7"
+    }
 }

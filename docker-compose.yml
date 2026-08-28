@@ -1,0 +1,12 @@
+name: decampoacampo
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: decampoacampo_mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    env_file:
+      - ./docker/mysql/mysql.env

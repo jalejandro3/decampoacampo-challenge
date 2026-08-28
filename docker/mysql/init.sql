@@ -1,0 +1,18 @@
+CREATE DATABASE IF NOT EXISTS decampoacampo DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE decampoacampo;
+
+CREATE TABLE IF NOT EXISTS `productos` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE DATABASE IF NOT EXISTS decampoacampo_test DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE decampoacampo_test;
+
+CREATE TABLE IF NOT EXISTS productos LIKE decampoacampo.productos;

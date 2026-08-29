@@ -12,12 +12,12 @@ class MostrarProducto
     /**
      * @throws ProductoNoEncontradoException
      */
-    public function execute(int $productoId): array
+    public function execute(int $id): array
     {
-        $producto = $this->productoRepository->findById($productoId);
+        $producto = $this->productoRepository->findById($id);
 
         if ($producto === null) {
-            throw new ProductoNoEncontradoException("El producto con id $productoId no existe.");
+            throw new ProductoNoEncontradoException("El producto con id $id no existe.");
         }
 
         return ProductoPresenter::transformar($producto, $this->configuracion->getPrecioUsd());

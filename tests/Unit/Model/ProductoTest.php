@@ -35,14 +35,24 @@ class ProductoTest extends TestCase
         $productoArray = $producto->toArray();
 
         $this->assertIsArray($productoArray);
-        $this->assertCount(3, $productoArray);
+        $this->assertCount(4, $productoArray);
 
+        $this->assertArrayHasKey('id', $productoArray);
         $this->assertArrayHasKey('nombre', $productoArray);
         $this->assertArrayHasKey('descripcion', $productoArray);
         $this->assertArrayHasKey('precio', $productoArray);
 
+        $this->assertEquals(1, $productoArray['id']);
         $this->assertEquals('Ganado', $productoArray['nombre']);
         $this->assertEquals('Maute', $productoArray['descripcion']);
         $this->assertEquals(1000.0, $productoArray['precio']);
+    }
+
+    public function test_producto_creado_con_id_nulo_retorna_arreglo_con_id_nulo()
+    {
+        $producto = ProductoMother::createConId(null);
+        $productoArray = $producto->toArray();
+
+        $this->assertNull($productoArray['id']);
     }
 }

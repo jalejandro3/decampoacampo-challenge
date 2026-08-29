@@ -26,8 +26,8 @@ class ListarProductosTest extends TestCase
 
     public function test_listar_productos_con_productos_existentes_retorna_array_de_productos()
     {
-        $productoGanado = new Producto('Ganado', 'Maute', 100000.0);
-        $productoCerdo = new Producto('Cerdo', 'Lechon', 50000.0);
+        $productoGanado = new Producto(1, 'Ganado', 'Maute', 100000.0);
+        $productoCerdo = new Producto(2, 'Cerdo', 'Lechon', 50000.0);
         $productos = [$productoGanado, $productoCerdo];
 
         $productoRepository = $this->createStub(ProductoRepository::class);

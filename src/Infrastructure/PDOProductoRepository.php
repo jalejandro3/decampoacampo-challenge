@@ -12,7 +12,7 @@ class PDOProductoRepository implements ProductoRepository
 
     public function findById(int $id): ?Producto
     {
-        $stmt = $this->pdo->prepare('SELECT nombre, descripcion, precio FROM productos WHERE id = :id');
+        $stmt = $this->pdo->prepare('SELECT id, nombre, descripcion, precio FROM productos WHERE id = :id');
         $stmt->execute([':id' => $id]);
 
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -44,6 +44,6 @@ class PDOProductoRepository implements ProductoRepository
 
     private function mapearProducto(array $producto): Producto
     {
-        return new Producto($producto['nombre'], $producto['descripcion'], (float) $producto['precio']);
+        return new Producto((int) $producto['id'], $producto['nombre'], $producto['descripcion'], (float) $producto['precio']);
     }
 }

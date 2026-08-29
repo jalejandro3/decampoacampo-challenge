@@ -9,7 +9,7 @@ readonly class Producto
     /**
      * @throws PrecioInvalidoException
      */
-    public function __construct(private string $nombre, private string $descripcion, private float $precio)
+    public function __construct(private ?int $id, private string $nombre, private string $descripcion, private float $precio)
     {
         if ($precio <= 0) {
             throw new PrecioInvalidoException('El precio del producto debe ser mayor a 0.');
@@ -24,6 +24,7 @@ readonly class Producto
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,

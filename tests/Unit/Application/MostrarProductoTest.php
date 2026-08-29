@@ -40,16 +40,18 @@ class MostrarProductoTest extends TestCase
         $result = $mostrarProducto->execute(1);
 
         $this->assertIsArray($result);
-        $this->assertCount(4, $result);
+        $this->assertCount(5, $result);
 
+        $this->assertArrayHasKey('id', $result);
         $this->assertArrayHasKey('nombre', $result);
         $this->assertArrayHasKey('descripcion', $result);
         $this->assertArrayHasKey('precio', $result);
         $this->assertArrayHasKey('precio_usd', $result);
 
+        $this->assertSame(1, $result['id']);
         $this->assertEquals('Ganado', $result['nombre']);
         $this->assertEquals('Maute', $result['descripcion']);
         $this->assertEquals(1000.0, $result['precio']);
-        $this->assertEquals(1.0, $result['precio_usd']);
+        $this->assertSame(1.0, $result['precio_usd']);
     }
 }

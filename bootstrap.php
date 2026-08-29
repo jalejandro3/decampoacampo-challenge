@@ -1,7 +1,10 @@
 <?php
 
 use Dotenv\Dotenv;
+use Jalejandro\DecampoacampoChallenge\Application\ListarProductos;
 use Jalejandro\DecampoacampoChallenge\Application\MostrarProducto;
+use Jalejandro\DecampoacampoChallenge\Http\ListarProductosController;
+use Jalejandro\DecampoacampoChallenge\Http\MostrarProductoController;
 use Jalejandro\DecampoacampoChallenge\Infrastructure\EnvConfig;
 use Jalejandro\DecampoacampoChallenge\Infrastructure\PDOProductoRepository;
 
@@ -22,5 +25,11 @@ $pdo = new PDO($dsn, $config->getDbUser(), $config->getDbPass(), [PDO::ATTR_ERRM
 
 $repositorio = new PDOProductoRepository($pdo);
 $mostrarProducto = new MostrarProducto($config, $repositorio);
+$listarProductos = new ListarProductos($config, $repositorio);
 
-return $mostrarProducto;
+$controllers = [
+    MostrarProductoController::class => new MostrarProductoController($mostrarProducto),
+    ListarProductosController::class => new ListarProductosController($listarProductos),
+];
+
+return $controllers;

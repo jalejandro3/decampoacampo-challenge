@@ -14,9 +14,9 @@ readonly class MostrarProductoController
     /**
      * @throws ProductoNoEncontradoException
      */
-    public function __invoke(int $productoId): JsonResponse
+    public function __invoke(int $id): JsonResponse
     {
-        $result = $this->mostrarProducto->execute($productoId);
+        $result = $this->mostrarProducto->execute($id);
 
         return new JsonResponse($result, Response::HTTP_OK);
     }

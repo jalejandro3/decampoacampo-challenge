@@ -10,3 +10,18 @@ services:
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     env_file:
       - ./docker/mysql/mysql.env
+
+  php:
+    build: .
+    container_name: decampoacampo_php
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    environment:
+      PRECIO_USD: 1485.00
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: decampoacampo
+      DB_USER: root
+      DB_PASS: root

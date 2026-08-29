@@ -9,15 +9,15 @@ use Jalejandro\DecampoacampoChallenge\Infrastructure\EnvConfig;
 use Jalejandro\DecampoacampoChallenge\Infrastructure\PDOProductoRepository;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 
 $config = new EnvConfig([
-    'PRECIO_USD' => $_ENV['PRECIO_USD'] ?? null,
-    'DB_HOST' => $_ENV['DB_HOST'] ?? null,
-    'DB_NAME' => $_ENV['DB_NAME'] ?? null,
-    'DB_USER' => $_ENV['DB_USER'] ?? null,
-    'DB_PASS' => $_ENV['DB_PASS'] ?? '',
-    'DB_PORT' => $_ENV['DB_PORT'] ?? null,
+    'PRECIO_USD' => $_SERVER['PRECIO_USD'] ?? (getenv('PRECIO_USD') ?: null),
+    'DB_HOST' => $_SERVER['DB_HOST'] ?? (getenv('DB_HOST') ?: null),
+    'DB_NAME' => $_SERVER['DB_NAME'] ?? (getenv('DB_NAME') ?: null),
+    'DB_USER' => $_SERVER['DB_USER'] ?? (getenv('DB_USER') ?: null),
+    'DB_PASS' => $_SERVER['DB_PASS'] ?? (getenv('DB_PASS') ?: ''),
+    'DB_PORT' => $_SERVER['DB_PORT'] ?? (getenv('DB_PORT') ?: null),
 ]);
 
 $dsn = "mysql:host={$config->getDbHost()};port={$config->getDbPort()};dbname={$config->getDbName()};charset=utf8mb4";

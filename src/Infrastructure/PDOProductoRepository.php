@@ -21,6 +21,21 @@ class PDOProductoRepository implements ProductoRepository
             return null;
         }
 
-        return new Producto($product['nombre'], $product['descripcion'], (float) $product['precio']);
+        return $this->mapearProducto($product);
+    }
+
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->prepare('SELECT id, nombre, descripcion, precio FROM productos ORDER BY id ASC');
+        $stmt->execute();
+
+        $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn($producto) => $this->mapearProducto($producto), $productos);
+    }
+
+    private function mapearProducto(array $producto): Producto
+    {
+        return new Producto($producto['nombre'], $producto['descripcion'], (float) $producto['precio']);
     }
 }

@@ -3,6 +3,7 @@
 namespace Integration\Infrastructure;
 
 use Jalejandro\DecampoacampoChallenge\Infrastructure\PDOProductoRepository;
+use Jalejandro\DecampoacampoChallenge\Model\Producto;
 use PHPUnit\Framework\TestCase;
 use PDO;
 
@@ -35,12 +36,7 @@ class PDOProductoRepositoryTest extends TestCase
 
     public function test_pdo_producto_repository_con_producto_existente_retorna_producto()
     {
-        $stmt = $this->pdo->prepare('INSERT INTO productos (nombre, descripcion, precio) VALUES (:nombre, :descripcion, :precio)');
-        $stmt->execute([
-            ':nombre' => 'Ganado',
-            ':descripcion' => 'Maute',
-            ':precio' => 1000.0,
-        ]);
+        $this->insertarProducto('Ganado', 'Maute', 1000.0);
 
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
         $producto = $pdoProductoRepository->findById((int) $this->pdo->lastInsertId());
@@ -54,5 +50,41 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertEquals('Ganado', $productoArray['nombre']);
         $this->assertEquals('Maute', $productoArray['descripcion']);
         $this->assertSame(1000.0, $productoArray['precio']);
+    }
+
+    public function test_pdo_producto_repository_con_productos_no_existentes_retorna_una_array_vacio()
+    {
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+        $productos = $pdoProductoRepository->findAll();
+
+        $this->assertIsArray($productos);
+        $this->assertEmpty($productos);
+    }
+
+    public function test_pdo_producto_repository_con_productos_existentes_retorna_una_array_de_productos()
+    {
+        $this->insertarProducto('Ganado', 'Maute', 100000.0);
+        $this->insertarProducto('Cerdo', 'Lechon', 50000.0);
+
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+        $productos = $pdoProductoRepository->findAll();
+
+        $this->assertIsArray($productos);
+        $this->assertCount(2, $productos);
+        $this->assertContainsOnlyInstancesOf(Producto::class, $productos);
+
+        $productoArray = $productos[0]->toArray();
+
+        $this->assertEquals('Ganado', $productoArray['nombre']);
+    }
+
+    private function insertarProducto(string $nombre, string $descripcion, float $precio): void
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO productos (nombre, descripcion, precio) VALUES (:nombre, :descripcion, :precio)');
+        $stmt->execute([
+            ':nombre' => $nombre,
+            ':descripcion' => $descripcion,
+            ':precio' => $precio,
+        ]);
     }
 }

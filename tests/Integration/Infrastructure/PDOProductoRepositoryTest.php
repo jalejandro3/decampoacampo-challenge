@@ -78,6 +78,24 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertEquals('Ganado', $productoArray['nombre']);
     }
 
+    public function test_pdo_producto_repository_eliminar_producto_no_existente_retorna_falso()
+    {
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+        $result = $pdoProductoRepository->delete(2);
+
+        $this->assertFalse( $result);
+    }
+
+    public function test_pdo_producto_repository_eliminar_producto_existente_retorna_verdadero()
+    {
+        $this->insertarProducto('Ganado', 'Maute', 1000.0);
+
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+        $result = $pdoProductoRepository->delete((int) $this->pdo->lastInsertId());
+
+        $this->assertTrue($result);
+    }
+
     private function insertarProducto(string $nombre, string $descripcion, float $precio): void
     {
         $stmt = $this->pdo->prepare('INSERT INTO productos (nombre, descripcion, precio) VALUES (:nombre, :descripcion, :precio)');

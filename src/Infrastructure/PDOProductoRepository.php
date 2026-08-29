@@ -34,6 +34,14 @@ class PDOProductoRepository implements ProductoRepository
         return array_map(fn($producto) => $this->mapearProducto($producto), $productos);
     }
 
+    public function delete(int $id): bool
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM productos WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+
+        return !($stmt->rowCount() === 0);
+    }
+
     private function mapearProducto(array $producto): Producto
     {
         return new Producto($producto['nombre'], $producto['descripcion'], (float) $producto['precio']);

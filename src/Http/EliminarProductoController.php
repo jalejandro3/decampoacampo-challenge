@@ -5,6 +5,7 @@ namespace Jalejandro\DecampoacampoChallenge\Http;
 use Jalejandro\DecampoacampoChallenge\Application\EliminarProducto;
 use Jalejandro\DecampoacampoChallenge\Exception\ProductoNoEncontradoException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 readonly class EliminarProductoController
@@ -14,7 +15,7 @@ readonly class EliminarProductoController
     /**
      * @throws ProductoNoEncontradoException
      */
-    public function __invoke(int $id): JsonResponse
+    public function __invoke(int $id, ?Request $request = null): JsonResponse
     {
         $this->eliminarProducto->execute($id);
 

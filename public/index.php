@@ -17,7 +17,7 @@ try {
     $parameters = $matcher->match($request->getPathInfo());
     $controller = $controllers[$parameters['_controller']];
     $routeParams = array_filter($parameters, fn($key) => !str_starts_with($key, '_'), ARRAY_FILTER_USE_KEY);
-    $response = $controller(...$routeParams);
+    $response = $controller(...$routeParams, request: $request);
 } catch (Throwable $e) {
     $response = new ExceptionHandler()->handle($e);
 }

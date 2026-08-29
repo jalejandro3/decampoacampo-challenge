@@ -7,7 +7,7 @@ use Jalejandro\DecampoacampoChallenge\Model\ProductoRepository;
 
 class MostrarProducto
 {
-    public function __construct(private readonly Configuracion $configuracion,private readonly ProductoRepository $productoRepository) {}
+    public function __construct(private readonly Configuracion $configuracion, private readonly ProductoRepository $productoRepository) {}
 
     /**
      * @throws ProductoNoEncontradoException
@@ -20,9 +20,6 @@ class MostrarProducto
             throw new ProductoNoEncontradoException("El producto con id $productoId no existe.");
         }
 
-        $result = $producto->toArray();
-        $result['precio_usd'] = $producto->precioEnDolares($this->configuracion->getPrecioUsd());
-
-        return $result;
+        return ProductoPresenter::transformar($producto, $this->configuracion->getPrecioUsd());
     }
 }

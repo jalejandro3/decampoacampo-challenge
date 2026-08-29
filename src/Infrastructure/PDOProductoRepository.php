@@ -39,7 +39,7 @@ class PDOProductoRepository implements ProductoRepository
         $stmt = $this->pdo->prepare('DELETE FROM productos WHERE id = :id');
         $stmt->execute([':id' => $id]);
 
-        return !($stmt->rowCount() === 0);
+        return $stmt->rowCount() > 0;
     }
 
     private function mapearProducto(array $producto): Producto

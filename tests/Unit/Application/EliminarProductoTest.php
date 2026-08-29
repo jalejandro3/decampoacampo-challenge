@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Application;
+namespace Tests\Unit\Application;
 
 use Jalejandro\DecampoacampoChallenge\Application\EliminarProducto;
 use Jalejandro\DecampoacampoChallenge\Exception\ProductoNoEncontradoException;
@@ -21,5 +21,16 @@ class EliminarProductoTest extends TestCase
         $this->expectExceptionMessageIs('Producto no encontrado.');
 
         $eliminarProducto->execute(1);
+    }
+
+    public function test_eliminar_producto_con_producto_existente_no_arroja_exception()
+    {
+        $productoRepository = $this->createStub(ProductoRepository::class);
+        $productoRepository->method('delete')->willReturn(true);
+
+        $eliminarProducto = new EliminarProducto($productoRepository);
+        $eliminarProducto->execute(1);
+
+        $this->expectNotToPerformAssertions();
     }
 }

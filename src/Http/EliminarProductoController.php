@@ -18,6 +18,6 @@ readonly class EliminarProductoController
     {
         $this->eliminarProducto->execute($id);
 
-        return new JsonResponse(['message' => 'Producto eliminado correctamente.'], Response::HTTP_NO_CONTENT);
+        return new JsonResponse()->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

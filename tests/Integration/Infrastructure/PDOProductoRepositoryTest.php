@@ -86,14 +86,16 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertFalse( $result);
     }
 
-    public function test_pdo_producto_repository_eliminar_producto_existente_retorna_verdadero()
+    public function test_pdo_producto_repository_eliminar_producto_existente()
     {
         $this->insertarProducto('Ganado', 'Maute', 1000.0);
+        $productoId = (int) $this->pdo->lastInsertId();
 
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
-        $result = $pdoProductoRepository->delete((int) $this->pdo->lastInsertId());
+        $result = $pdoProductoRepository->delete($productoId);
 
         $this->assertTrue($result);
+        $this->assertNull($pdoProductoRepository->findById($productoId));
     }
 
     private function insertarProducto(string $nombre, string $descripcion, float $precio): void

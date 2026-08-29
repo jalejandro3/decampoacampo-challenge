@@ -8,4 +8,5 @@ interface ProductoRepository
     public function findAll(): array;
     public function delete(int $id): bool;
     public function save(Producto $producto): int;
+    public function update(Producto $producto): void;
 }

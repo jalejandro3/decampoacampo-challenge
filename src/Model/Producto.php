@@ -24,6 +24,11 @@ readonly class Producto
         }
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getNombre(): string
     {
         return $this->nombre;

@@ -54,6 +54,17 @@ class PDOProductoRepository implements ProductoRepository
         return (int) $this->pdo->lastInsertId();
     }
 
+    public function update(Producto $producto): void
+    {
+        $stmt = $this->pdo->prepare('UPDATE productos SET nombre = :nombre, descripcion = :descripcion, precio = :precio WHERE id = :id');
+        $stmt->execute([
+            ':id' => $producto->getId(),
+            ':nombre' => $producto->getNombre(),
+            ':descripcion' => $producto->getDescripcion(),
+            ':precio' => $producto->getPrecio(),
+        ]);
+    }
+
     private function mapearProducto(array $producto): Producto
     {
         return new Producto((int) $producto['id'], $producto['nombre'], $producto['descripcion'], (float) $producto['precio']);

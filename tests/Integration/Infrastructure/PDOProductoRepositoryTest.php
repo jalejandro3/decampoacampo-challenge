@@ -113,6 +113,24 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertEquals(1000.0, $nuevoProductoArray['precio']);
     }
 
+    public function test_pdo_producto_repository_update_actualiza_producto()
+    {
+        $this->insertarProducto('Ganado', 'Maute', 1000.0);
+
+        $id = (int) $this->pdo->lastInsertId();
+        $producto = new Producto($id, 'Cerdo', 'Lechon', 200000.0);
+
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+
+        $pdoProductoRepository->update($producto);
+
+        $productoActualizado = $pdoProductoRepository->findById($id);
+
+        $this->assertSame('Cerdo', $productoActualizado->getNombre());
+        $this->assertSame('Lechon', $productoActualizado->getDescripcion());
+        $this->assertSame(200000.0, $productoActualizado->getPrecio());
+    }
+
     private function insertarProducto(string $nombre, string $descripcion, float $precio): void
     {
         $stmt = $this->pdo->prepare('INSERT INTO productos (nombre, descripcion, precio) VALUES (:nombre, :descripcion, :precio)');

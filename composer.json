@@ -21,6 +21,8 @@
         }
     ],
     "require": {
-        "vlucas/phpdotenv": "^5.7"
+        "vlucas/phpdotenv": "^5.7",
+        "symfony/routing": "^8.1",
+        "symfony/http-foundation": "^8.1"
     }
 }

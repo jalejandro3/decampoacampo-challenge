@@ -16,7 +16,7 @@ readonly class Producto
         }
 
         if (trim($descripcion) === '') {
-            throw new DatoInvalidoException('La descripcion del producto no puede estar vacía.');
+            throw new DatoInvalidoException('La descripción del producto no puede estar vacía.');
         }
 
         if ($precio <= 0) {

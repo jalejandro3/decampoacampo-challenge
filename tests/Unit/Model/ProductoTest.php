@@ -66,7 +66,7 @@ class ProductoTest extends TestCase
     public function test_producto_descripcion_vacio_arroja_dato_invalido_exception()
     {
         $this->expectException(DatoInvalidoException::class);
-        $this->expectExceptionMessageIs('La descripcion del producto no puede estar vacía.');
+        $this->expectExceptionMessageIs('La descripción del producto no puede estar vacía.');
         ProductoMother::createConDescripcion('');
     }
 }

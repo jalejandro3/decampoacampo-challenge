@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Model;
 
-use Jalejandro\DecampoacampoChallenge\Exception\PrecioInvalidoException;
+use Jalejandro\DecampoacampoChallenge\Exception\DatoInvalidoException;
 use Tests\ObjectMother\ProductoMother;
 use PHPUnit\Framework\TestCase;
 
@@ -15,16 +15,16 @@ class ProductoTest extends TestCase
         $this->assertEquals(1.0, $producto->precioEnDolares(1000));
     }
 
-    public function test_producto_precio_negativo_arroja_precio_invalido_exception()
+    public function test_producto_precio_negativo_arroja_dato_invalido_exception()
     {
-        $this->expectException(PrecioInvalidoException::class);
+        $this->expectException(DatoInvalidoException::class);
         $this->expectExceptionMessageIs('El precio del producto debe ser mayor a 0.');
         ProductoMother::create(-1000.0);
     }
 
-    public function test_producto_precio_cero_arroja_precio_invalido_exception()
+    public function test_producto_precio_cero_arroja_dato_invalido_exception()
     {
-        $this->expectException(PrecioInvalidoException::class);
+        $this->expectException(DatoInvalidoException::class);
         $this->expectExceptionMessageIs('El precio del producto debe ser mayor a 0.');
         ProductoMother::create(0.0);
     }
@@ -54,5 +54,19 @@ class ProductoTest extends TestCase
         $productoArray = $producto->toArray();
 
         $this->assertNull($productoArray['id']);
+    }
+
+    public function test_producto_nombre_vacio_arroja_dato_invalido_exception()
+    {
+        $this->expectException(DatoInvalidoException::class);
+        $this->expectExceptionMessageIs('El nombre del producto no puede estar vacío.');
+        ProductoMother::createConNombre('');
+    }
+
+    public function test_producto_descripcion_vacio_arroja_dato_invalido_exception()
+    {
+        $this->expectException(DatoInvalidoException::class);
+        $this->expectExceptionMessageIs('La descripcion del producto no puede estar vacía.');
+        ProductoMother::createConDescripcion('');
     }
 }

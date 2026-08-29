@@ -2,6 +2,6 @@
 
 namespace Jalejandro\DecampoacampoChallenge\Exception;
 
-class PrecioInvalidoException extends \Exception
+class DatoInvalidoException extends \Exception
 {
 }

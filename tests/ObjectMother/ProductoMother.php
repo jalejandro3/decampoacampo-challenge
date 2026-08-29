@@ -15,4 +15,14 @@ class ProductoMother
     {
         return new Producto($id, 'Ganado', 'Maute', 1000.0);
     }
+
+    public static function createConNombre(string $nombre): Producto
+    {
+        return new Producto(1, $nombre, 'Maute', 1000.0);
+    }
+
+    public static function createConDescripcion(string $descripcion): Producto
+    {
+        return new Producto(1, 'Ganado', $descripcion, 1000.0);
+    }
 }

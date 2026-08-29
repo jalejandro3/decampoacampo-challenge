@@ -2,17 +2,25 @@
 
 namespace Jalejandro\DecampoacampoChallenge\Model;
 
-use Jalejandro\DecampoacampoChallenge\Exception\PrecioInvalidoException;
+use Jalejandro\DecampoacampoChallenge\Exception\DatoInvalidoException;
 
 readonly class Producto
 {
     /**
-     * @throws PrecioInvalidoException
+     * @throws DatoInvalidoException
      */
     public function __construct(private ?int $id, private string $nombre, private string $descripcion, private float $precio)
     {
+        if (trim($nombre) === '') {
+            throw new DatoInvalidoException('El nombre del producto no puede estar vacío.');
+        }
+
+        if (trim($descripcion) === '') {
+            throw new DatoInvalidoException('La descripcion del producto no puede estar vacía.');
+        }
+
         if ($precio <= 0) {
-            throw new PrecioInvalidoException('El precio del producto debe ser mayor a 0.');
+            throw new DatoInvalidoException('El precio del producto debe ser mayor a 0.');
         }
     }
 

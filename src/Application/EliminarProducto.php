@@ -12,9 +12,9 @@ readonly class EliminarProducto
     /**
      * @throws ProductoNoEncontradoException
      */
-    public function execute(int $productoId): void
+    public function execute(int $id): void
     {
-        $result = $this->productoRepository->delete($productoId);
+        $result = $this->productoRepository->delete($id);
 
         if (!$result) {
             throw new ProductoNoEncontradoException('Producto no encontrado.');

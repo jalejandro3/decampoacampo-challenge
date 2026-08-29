@@ -4,9 +4,9 @@ namespace Jalejandro\DecampoacampoChallenge\Application;
 
 use Jalejandro\DecampoacampoChallenge\Model\ProductoRepository;
 
-class ListarProductos
+readonly class ListarProductos
 {
-    public function __construct(private readonly Configuracion $configuracion, private readonly ProductoRepository $productoRepository) {}
+    public function __construct(private Configuracion $configuracion, private ProductoRepository $productoRepository) {}
 
     public function execute(): array
     {

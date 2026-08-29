@@ -5,9 +5,9 @@ namespace Jalejandro\DecampoacampoChallenge\Application;
 use Jalejandro\DecampoacampoChallenge\Exception\ProductoNoEncontradoException;
 use Jalejandro\DecampoacampoChallenge\Model\ProductoRepository;
 
-class MostrarProducto
+readonly class MostrarProducto
 {
-    public function __construct(private readonly Configuracion $configuracion, private readonly ProductoRepository $productoRepository) {}
+    public function __construct(private Configuracion $configuracion, private ProductoRepository $productoRepository) {}
 
     /**
      * @throws ProductoNoEncontradoException

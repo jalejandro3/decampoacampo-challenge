@@ -42,6 +42,18 @@ class PDOProductoRepository implements ProductoRepository
         return $stmt->rowCount() > 0;
     }
 
+    public function save(Producto $producto): int
+    {
+        $stmt = $this->pdo->prepare('INSERT INTO productos (nombre, descripcion, precio) VALUES (:nombre, :descripcion, :precio)');
+        $stmt->execute([
+            ':nombre' => $producto->getNombre(),
+            ':descripcion' => $producto->getDescripcion(),
+            ':precio' => $producto->getPrecio(),
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
     private function mapearProducto(array $producto): Producto
     {
         return new Producto((int) $producto['id'], $producto['nombre'], $producto['descripcion'], (float) $producto['precio']);

@@ -16,6 +16,21 @@ readonly class Producto
         }
     }
 
+    public function getNombre(): string
+    {
+        return $this->nombre;
+    }
+
+    public function getDescripcion(): string
+    {
+        return $this->descripcion;
+    }
+
+    public function getPrecio(): float
+    {
+        return $this->precio;
+    }
+
     public function precioEnDolares(float $cotizacionDolar): float
     {
         return round($this->precio / $cotizacionDolar, 2);

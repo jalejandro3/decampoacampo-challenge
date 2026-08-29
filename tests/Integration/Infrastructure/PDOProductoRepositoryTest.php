@@ -6,6 +6,7 @@ use Jalejandro\DecampoacampoChallenge\Infrastructure\PDOProductoRepository;
 use Jalejandro\DecampoacampoChallenge\Model\Producto;
 use PHPUnit\Framework\TestCase;
 use PDO;
+use Tests\ObjectMother\ProductoMother;
 
 class PDOProductoRepositoryTest extends TestCase
 {
@@ -83,7 +84,7 @@ class PDOProductoRepositoryTest extends TestCase
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
         $result = $pdoProductoRepository->delete(2);
 
-        $this->assertFalse( $result);
+        $this->assertFalse($result);
     }
 
     public function test_pdo_producto_repository_eliminar_producto_existente()
@@ -96,6 +97,20 @@ class PDOProductoRepositoryTest extends TestCase
 
         $this->assertTrue($result);
         $this->assertNull($pdoProductoRepository->findById($id));
+    }
+
+    public function test_pdo_producto_repository_save_producto_retorna_id_insertado()
+    {
+        $producto = ProductoMother::createConId(null);
+        $pdoProductoRepository = new PDOProductoRepository($this->pdo);
+
+        $id = $pdoProductoRepository->save($producto);
+        $nuevoProducto = $pdoProductoRepository->findById($id);
+        $nuevoProductoArray = $nuevoProducto->toArray();
+
+        $this->assertGreaterThan(0, $id);
+        $this->assertEquals('Ganado', $nuevoProductoArray['nombre']);
+        $this->assertEquals(1000.0, $nuevoProductoArray['precio']);
     }
 
     private function insertarProducto(string $nombre, string $descripcion, float $precio): void

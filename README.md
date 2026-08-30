@@ -119,3 +119,44 @@ La API distingue dos niveles de validación:
 - **`422 Unprocessable Content`** — la petición está bien formada, pero algún valor viola una regla de negocio (por ejemplo, precio menor o igual a 0, o nombre/descripción vacíos). El mensaje indica el problema concreto.
 - **`404 Not Found`** — el producto solicitado no existe.
 - **`500 Internal Server Error`** — error inesperado (el mensaje es genérico, para no exponer detalles internos).
+
+## Frontend
+
+Interfaz web en HTML, CSS y JavaScript puro (sin frameworks) que consume la API REST de arriba para listar, crear, editar y eliminar productos, mostrando el precio en pesos argentinos y en dólares.
+
+### Estructura de archivos
+
+```
+public/
+  ├── index.html
+  ├── css/
+  │   └── estilos.css
+  └── js/
+      ├── api.js       — llamadas fetch a los 5 endpoints
+      ├── dom.js       — referencias a los elementos del DOM
+      ├── render.js    — construcción de la tabla de productos
+      └── app.js       — lógica de la interfaz (eventos, formulario, mensajes)
+```
+
+### Cómo ejecutarlo
+
+El frontend se sirve desde el mismo `public/` que la API (mismo origen, sin CORS necesario) — no hace falta ningún paso extra ni otro servidor. Con el entorno ya levantado (`docker-compose up --build`, ver sección Backend), abrí:
+
+```
+http://localhost:8080/
+```
+
+### Cómo probar la interacción con la API
+
+| Acción en la UI | Qué dispara |
+  |---|---|
+| Cargar la página | `GET /productos` — llena la tabla automáticamente |
+| Botón "Nuevo producto" → completar form → "Guardar" | `POST /productos` |
+| Botón "Actualizar" en una fila → editar campos → "Guardar" | `GET /productos/{id}` (precarga) + `PUT /productos/{id}` |
+| Botón "Eliminar" en una fila → confirmar en el modal | `DELETE /productos/{id}` |
+
+Los mensajes de éxito o error de cada acción aparecen arriba de la tabla (verde/rojo) y se ocultan solos a los 2 segundos. Para verificar el manejo de errores desde la UI:
+
+- Crear un producto con nombre o descripción vacíos, o precio 0/negativo → debería mostrar el mensaje de validación que devuelve la API (422).
+- Eliminar un producto y volver a intentar eliminarlo (o editarlo) → debería mostrar el mensaje de "no existe" (404).
+- Con el contenedor `php` apagado, cualquier acción debería mostrar un mensaje de error de conexión, sin romper la página.

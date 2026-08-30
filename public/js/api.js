@@ -1,59 +1,30 @@
-export async function listarProductos() {
-    const respuesta = await fetch('/productos');
-
-    if (!respuesta.ok) {
-        throw new Error('No se pudieron cargar los productos');
+async function pedir (url, options = {}) {
+    let respuesta;
+    try {
+        respuesta = await fetch(url, options);
+    } catch (error) {
+        throw new Error('No se pudo conectar con el servidor');
     }
-
-    return await respuesta.json();
+    if (respuesta.status === 204) {
+        return null;
+    }
+    const cuerpo = await respuesta.json();
+    if (!respuesta.ok) {
+        throw new Error(cuerpo.error);
+    }
+    return cuerpo;
 }
 
-export async function crearProducto(datos) {
-    const respuesta = await fetch('/productos', {
-        method: 'POST',
+function peticionJson(metodo, datos) {
+    return {
+        method: metodo,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos)
-    });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.error);
-    }
-
-    return await respuesta.json();
+    };
 }
 
-export async function eliminarProducto(id) {
-    const respuesta = await fetch(`/productos/${id}`, { method: 'DELETE' });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.error);
-    }
-}
-
-export async function obtenerProducto(id) {
-    const respuesta = await fetch(`/productos/${id}`);
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.error);
-    }
-
-    return await respuesta.json();
-}
-
-export async function actualizarProducto(id, datos) {
-    const respuesta = await fetch(`/productos/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-    });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.error);
-    }
-
-    return await respuesta.json();
-}
+export const listarProductos = () => pedir('/productos');
+export const obtenerProducto = (id) => pedir(`/productos/${id}`);
+export const crearProducto = (datos) => pedir('/productos', peticionJson('POST', datos));
+export const actualizarProducto = (id, datos) => pedir(`/productos/${id}`, peticionJson('PUT', datos));
+export const eliminarProducto = (id) => pedir(`/productos/${id}`, { method: 'DELETE' });

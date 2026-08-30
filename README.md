@@ -24,16 +24,16 @@ Crea el archivo `.env` a partir de la plantilla:
 cp .env.example .env
 ```
 
-Edita el `.env` y completa las variables con estos valores:
+Edita el `.env` y completa las variables con los siguientes valores:
 
-| Variable | Valor | Descripción |
-|----------|-------|-------------|
-| `PRECIO_USD` | `1485.00` | Cotización del dólar. Se usa para calcular el campo `precio_usd` de cada producto. |
-| `DB_HOST` | `mysql` | Host de la base de datos (el nombre del servicio en la red de Docker). |
-| `DB_PORT` | `3306` | Puerto interno de MySQL dentro de la red de Docker. |
-| `DB_NAME` | `decampoacampo` | Nombre de la base de datos. |
-| `DB_USER` | `root` | Usuario de la base de datos. |
-| `DB_PASS` | `root` | Contraseña de la base de datos. |
+| Variable | Valor | Descripción                                                                                                                                                          |
+|----------|-------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `PRECIO_USD` | `1485.00` | Cotización del dólar. Se usa para calcular el campo `precio_usd` de cada producto. Puedes consultar el valor del dólar a través de [BCRA](https://www.bcra.gob.ar/). |
+| `DB_HOST` | `mysql` | Host de la base de datos (el nombre del servicio en la red de Docker).                                                                                               |
+| `DB_PORT` | `3306` | Puerto interno de MySQL dentro de la red de Docker.                                                                                                                  |
+| `DB_NAME` | `decampoacampo` | Nombre de la base de datos.                                                                                                                                          |
+| `DB_USER` | `root` | Usuario de la base de datos.                                                                                                                                         |
+| `DB_PASS` | `root` | Contraseña de la base de datos.                                                                                                                                      |
 
 **b) Configuración de MySQL**
 
@@ -43,7 +43,7 @@ Crea el archivo `mysql.env` a partir de su plantilla:
 cp docker/mysql/mysql.env.example docker/mysql/mysql.env
 ```
 
-Edita el `mysql.env` y completa:
+Edita el `mysql.env` y completa con la siguiente información:
 
 | Variable | Valor | Descripción |
 |----------|-------|-------------|
@@ -140,11 +140,13 @@ public/
 
 ### Cómo ejecutarlo
 
-El frontend se sirve desde el mismo `public/` que la API (mismo origen, sin CORS necesario) — no hace falta ningún paso extra ni otro servidor. Con el entorno ya levantado (`docker-compose up --build`, ver sección Backend), abrí:
+El frontend se sirve desde el mismo `public/` que la API (mismo origen, sin CORS necesario) — no hace falta ningún paso extra ni otro servidor. Con el entorno ya levantado (`docker-compose up --build`, ver sección Backend), abre:
 
 ```
 http://localhost:8080/
 ```
+
+> **Nota sobre localhost:** `http://localhost:8080` puede generar un error 404 por redirección a `https://localhost`. Esto suele pasar por `HSTS cacheado` por el navegador para el host localhost. Si llega a ocurrir este error, consulta la aplicación a través de `127.0.0.1:8080`.
 
 ### Cómo probar la interacción con la API
 
@@ -160,5 +162,3 @@ Los mensajes de éxito o error de cada acción aparecen arriba de la tabla (verd
 - Crear un producto con nombre o descripción vacíos, o precio 0/negativo → debería mostrar el mensaje de validación que devuelve la API (422).
 - Eliminar un producto y volver a intentar eliminarlo (o editarlo) → debería mostrar el mensaje de "no existe" (404).
 - Con el contenedor `php` apagado, cualquier acción debería mostrar un mensaje de error de conexión, sin romper la página.
-
-> **Nota sobre localhost:** `http://localhost:8080` puede generar un error 404 por redirección a `https://localhost`. Esto suele pasar por `HSTS cacheado` por el navegador para el host localhost. Si llega a ocurrir este error, consulta la aplicación a través de `127.0.0.1:8080`.

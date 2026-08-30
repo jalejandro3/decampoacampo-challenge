@@ -22,3 +22,38 @@ export async function crearProducto(datos) {
 
     return await respuesta.json();
 }
+
+export async function eliminarProducto(id) {
+    const respuesta = await fetch(`/productos/${id}`, { method: 'DELETE' });
+
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.error);
+    }
+}
+
+export async function obtenerProducto(id) {
+    const respuesta = await fetch(`/productos/${id}`);
+
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.error);
+    }
+
+    return await respuesta.json();
+}
+
+export async function actualizarProducto(id, datos) {
+    const respuesta = await fetch(`/productos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+    });
+
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.error);
+    }
+
+    return await respuesta.json();
+}

@@ -1,4 +1,4 @@
-import { listarProductos, crearProducto } from './api.js';
+import { listarProductos, crearProducto, eliminarProducto, obtenerProducto, actualizarProducto } from './api.js';
 
 const cargando = document.getElementById('cargando');
 const tabla = document.getElementById('tabla-productos');
@@ -11,6 +11,11 @@ const btnCancelar = document.getElementById('btn-cancelar');
 const inputNombre = document.getElementById('nombre');
 const inputDescripcion = document.getElementById('descripcion');
 const inputPrecio = document.getElementById('precio');
+const modalEliminar = document.getElementById('modal-eliminar');
+const textoConfirmar = document.getElementById('texto-confirmar');
+const tituloForm = document.getElementById('titulo-form');
+
+let modoEdicion = null;
 
 const formateadorArs = new Intl.NumberFormat('es-AR', {
     style: 'currency',
@@ -25,6 +30,16 @@ const formateadorUsd = new Intl.NumberFormat('en-US', {
 function mostrarMensaje(texto) {
     mensaje.textContent = texto;
     mensaje.hidden = false;
+}
+
+function confirmarEliminacion(nombre) {
+    textoConfirmar.textContent = `¿Eliminar "${nombre}"?`;
+    modalEliminar.showModal();
+    return new Promise(resolve => {
+        modalEliminar.addEventListener('close', () => {
+            resolve(modalEliminar.returnValue === 'confirmar');
+        }, { once: true });
+    });
 }
 
 function renderizarProductos(productos) {
@@ -47,7 +62,19 @@ function renderizarProductos(productos) {
         celdaUsd.textContent = formateadorUsd.format(producto.precio_usd);
 
         const celdaAcciones = document.createElement('td');
-        // botones Actualizar/Eliminar — los cableamos en la siguiente capa
+
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = 'Actualizar';
+        btnEditar.className = 'btn-editar';
+        btnEditar.dataset.id = producto.id;
+
+        const btnEliminar = document.createElement('button');
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.className = 'btn-eliminar peligro';
+        btnEliminar.dataset.id = producto.id;
+        btnEliminar.dataset.nombre = producto.nombre;
+
+        celdaAcciones.append(btnEditar, btnEliminar);
 
         fila.append(celdaNombre, celdaDescripcion, celdaArs, celdaUsd, celdaAcciones);
         cuerpoTabla.append(fila);
@@ -74,8 +101,52 @@ async function cargarProductos() {
     }
 }
 
+cuerpoTabla.addEventListener('click', async (evento) => {
+    const boton = evento.target;
+
+    if (boton.classList.contains('btn-eliminar')) {
+        const id = boton.dataset.id;
+        const nombre = boton.dataset.nombre;
+
+        const confirmado = await confirmarEliminacion(nombre);
+        if (!confirmado) return;
+
+        try {
+            await eliminarProducto(id);
+            await cargarProductos();
+            mostrarMensaje('Producto eliminado correctamente.');
+        } catch (error) {
+            mostrarMensaje(error.message);
+        }
+    }
+
+    if (boton.classList.contains('btn-editar')) {
+        const id = boton.dataset.id;
+
+        try {
+            const producto = await obtenerProducto(id);   // GET fresco (D2)
+            // precargar el form con los datos
+            inputNombre.value = producto.nombre;
+            inputDescripcion.value = producto.descripcion;
+            inputPrecio.value = producto.precio;
+            // cambiar a modo edición
+            modoEdicion = id;
+            tituloForm.textContent = 'Editar producto';
+            mensaje.hidden = true;
+            form.hidden = false;
+            inputNombre.focus();
+        } catch (error) {
+            // si el producto ya no existe (404, borrado concurrente)
+            mostrarMensaje(error.message);
+            await cargarProductos();   // refresca por si desapareció
+        }
+    }
+});
+
 btnNuevo.addEventListener('click', () => {
     form.reset();
+    modoEdicion = null;
+    tituloForm.textContent = 'Nuevo producto';
     mensaje.hidden = true;
     form.hidden = false;
     inputNombre.focus();
@@ -95,10 +166,15 @@ form.addEventListener('submit', async (evento) => {
     };
 
     try {
-        await crearProducto(datos);
+        if (modoEdicion === null) {
+            await crearProducto(datos);
+            mostrarMensaje('Producto creado correctamente.');
+        } else {
+            await actualizarProducto(modoEdicion, datos);
+            mostrarMensaje('Producto actualizado correctamente.');
+        }
         form.hidden = true;
         await cargarProductos();
-        mostrarMensaje('Producto creado correctamente.');
     } catch (error) {
         mostrarMensaje(error.message);
     }

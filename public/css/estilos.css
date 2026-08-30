@@ -3,6 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 header {
@@ -19,12 +20,16 @@ footer > p {
 
 footer > p,
 #form-producto,
-#mensaje,
 .header__titulo,
 .listado__titulo,
 .tabla-productos__barra {
     width: 1440px;
     margin: 0 auto;
+}
+
+#mensaje {
+    width: 1440px;
+    margin: 20px auto;
 }
 
 main {

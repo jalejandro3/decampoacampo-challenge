@@ -160,3 +160,5 @@ Los mensajes de éxito o error de cada acción aparecen arriba de la tabla (verd
 - Crear un producto con nombre o descripción vacíos, o precio 0/negativo → debería mostrar el mensaje de validación que devuelve la API (422).
 - Eliminar un producto y volver a intentar eliminarlo (o editarlo) → debería mostrar el mensaje de "no existe" (404).
 - Con el contenedor `php` apagado, cualquier acción debería mostrar un mensaje de error de conexión, sin romper la página.
+
+> **Nota sobre localhost:** `http://localhost:8080` puede generar un error 404 por redirección a `https://localhost`. Esto suele pasar por `HSTS cacheado` por el navegador para el host localhost. Si llega a ocurrir este error, consulta la aplicación a través de `127.0.0.1:8080`.

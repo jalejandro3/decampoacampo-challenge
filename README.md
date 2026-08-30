@@ -2,6 +2,8 @@
 
 ## Backend
 
+![PHP](https://img.shields.io/badge/PHP-8.4-777BB4)
+
 API REST para la gestión de productos (CRUD), desarrollada en **PHP 8.4 nativo** (sin frameworks de aplicación), con arquitectura por capas, tests automatizados y contenerización con Docker.
 
 ## Requisitos

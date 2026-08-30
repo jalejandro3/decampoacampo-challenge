@@ -2,6 +2,7 @@
 
 namespace Jalejandro\DecampoacampoChallenge\Http;
 
+use Jalejandro\DecampoacampoChallenge\Exception\DatoInvalidoException;
 use Jalejandro\DecampoacampoChallenge\Exception\DatoRequeridoException;
 use Jalejandro\DecampoacampoChallenge\Application\CrearProducto;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +15,7 @@ readonly class CrearProductoController
 
     /**
      * @throws DatoRequeridoException
+     * @throws DatoInvalidoException
      */
     public function __invoke(Request $request): JsonResponse
     {

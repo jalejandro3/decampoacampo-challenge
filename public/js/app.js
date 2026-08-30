@@ -1,19 +1,10 @@
 import { listarProductos, crearProducto, eliminarProducto, obtenerProducto, actualizarProducto } from './api.js';
+import { elementosMensaje, elementosLista, elementosFormulario, elementosModal } from './dom/dom.js';
 
-const cargando = document.getElementById('cargando');
-const tabla = document.getElementById('tabla-productos');
-const cuerpoTabla = document.getElementById('cuerpo-tabla');
-const sinProductos = document.getElementById('sin-productos');
-const mensaje = document.getElementById('mensaje');
-const btnNuevo = document.getElementById('btn-nuevo');
-const form = document.getElementById('form-producto');
-const btnCancelar = document.getElementById('btn-cancelar');
-const inputNombre = document.getElementById('nombre');
-const inputDescripcion = document.getElementById('descripcion');
-const inputPrecio = document.getElementById('precio');
-const modalEliminar = document.getElementById('modal-eliminar');
-const textoConfirmar = document.getElementById('texto-confirmar');
-const tituloForm = document.getElementById('titulo-form');
+const { mensaje } = elementosMensaje;
+const { cargando, tabla, cuerpoTabla, sinProductos } = elementosLista;
+const { btnNuevo, form, btnCancelar, tituloForm, inputNombre, inputDescripcion, inputPrecio } = elementosFormulario;
+const { modalEliminar, textoConfirmar } = elementosModal;
 
 let modoEdicion = null;
 
@@ -125,20 +116,17 @@ cuerpoTabla.addEventListener('click', async (evento) => {
 
         try {
             const producto = await obtenerProducto(id);   // GET fresco (D2)
-            // precargar el form con los datos
             inputNombre.value = producto.nombre;
             inputDescripcion.value = producto.descripcion;
             inputPrecio.value = producto.precio;
-            // cambiar a modo edición
             modoEdicion = id;
             tituloForm.textContent = 'Editar producto';
             mensaje.hidden = true;
             form.hidden = false;
             inputNombre.focus();
         } catch (error) {
-            // si el producto ya no existe (404, borrado concurrente)
             mostrarMensaje(error.message);
-            await cargarProductos();   // refresca por si desapareció
+            await cargarProductos();
         }
     }
 });

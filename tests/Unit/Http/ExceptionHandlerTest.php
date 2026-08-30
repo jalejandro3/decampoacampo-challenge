@@ -33,7 +33,7 @@ class ExceptionHandlerTest extends TestCase
         $this->assertEquals(json_encode(['error' => 'Error interno del servidor']), $response->getContent());
     }
 
-    public function test_exception_handler_excepcion_resource_not_found_exception_retorna_mensaje_generico()
+    public function test_exception_handler_resource_not_found_exception_retorna_mensaje_generico()
     {
         $exception = new ResourceNotFoundException('Ruta no encontrada para "/xyz"');
         $exceptionHandler = new ExceptionHandler();
@@ -43,7 +43,7 @@ class ExceptionHandlerTest extends TestCase
         $this->assertEquals(json_encode(['error' => 'Recurso no encontrado']), $response->getContent());
     }
 
-    public function test_exception_handler_excepcion_dato_requerido_exception()
+    public function test_exception_handler_dato_requerido_exception()
     {
         $exception = new DatoRequeridoException('Datos requeridos incompletos');
         $exceptionHandler = new ExceptionHandler();
@@ -53,7 +53,7 @@ class ExceptionHandlerTest extends TestCase
         $this->assertEquals(json_encode(['error' => 'Datos requeridos incompletos']), $response->getContent());
     }
 
-    public function test_exception_handler_excepcion_dato_invalido_exception()
+    public function test_exception_handler_dato_invalido_exception()
     {
         $exception = new DatoInvalidoException('El nombre del producto no puede estar vacío.');
         $exceptionHandler = new ExceptionHandler();

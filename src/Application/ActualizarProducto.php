@@ -7,7 +7,7 @@ use Jalejandro\DecampoacampoChallenge\Exception\ProductoNoEncontradoException;
 use Jalejandro\DecampoacampoChallenge\Model\Producto;
 use Jalejandro\DecampoacampoChallenge\Model\ProductoRepository;
 
-class ActualizarProducto
+readonly class ActualizarProducto
 {
     public function __construct(private Configuracion $configuracion, private ProductoRepository $productoRepository) {}
 

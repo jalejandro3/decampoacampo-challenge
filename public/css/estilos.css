@@ -1,0 +1,137 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+header {
+    background-color: #f2f2f2;
+
+    h1 {
+        color: #3179a7;
+    }
+}
+
+footer > p {
+    padding-top: 40px;
+}
+
+footer > p,
+#form-producto,
+#mensaje,
+.header__titulo,
+.listado__titulo,
+.tabla-productos__barra {
+    width: 1440px;
+    margin: 0 auto;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    height: 150px;
+    background-color: #f2f2f2;
+}
+
+.boton {
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton--exito {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.boton--peligro {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.boton--primario {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.formulario-producto {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #ccc;
+}
+
+.formulario-producto__titulo,
+.formulario-producto__campos {
+    padding-left: 20px;
+}
+
+.formulario-producto__campos {
+    display: flex;
+}
+
+.formulario-producto__botones {
+    padding: 20px 0 10px 20px;
+}
+
+.formulario-producto__campo {
+    flex: 1;
+    justify-content: space-between;
+}
+
+.mensaje {
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+.mensaje--error {
+    background-color: #842029;
+    border-color: #ea868f;
+    color: #ea868f;
+}
+
+.mensaje--exito {
+    background-color: #0f5132;
+    border-color: #75b798;
+    color: #75b798;
+}
+
+.tabla-productos {
+    width: 1440px;
+    margin: 0 auto;
+    table-layout: fixed;
+    border-bottom: 1px solid #ccc;
+    border-collapse: collapse;
+}
+
+.tabla-productos__fila {
+    border-bottom: 1px solid #ccc;
+}
+
+.tabla-productos__celda,
+.tabla-productos__cabecera,
+.tabla-productos__acciones {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.tabla-productos__acciones {
+    display: flex;
+    justify-content: right;
+    gap: 3px;
+}
+
+.tabla-productos__barra {
+    padding: 20px 0;
+}
+
+.tabla-productos__cabecera {
+    text-align: left;
+}

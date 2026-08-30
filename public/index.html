@@ -8,51 +8,57 @@
 </head>
 <body>
 <header>
-    <h1>De Campo a Campo - Inventario de Productos</h1>
+    <div class="header__titulo">
+        <h1>deCampoaCampo</h1>
+    </div>
 </header>
 
 <main>
-    <h1>Listado de Productos</h1>
+    <div class="listado__titulo">
+        <h1>Listado de Productos</h1>
+    </div>
 
     <div id="mensaje" role="status" aria-live="polite" hidden></div>
 
-    <button id="btn-nuevo" type="button">Nuevo producto</button>
-
-    <form id="form-producto" hidden novalidate>
-        <h2 id="titulo-form">Nuevo producto</h2>
-
-        <div>
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre">
-            <span class="error" id="error-nombre"></span>
+    <form id="form-producto" class="formulario-producto" hidden novalidate>
+        <h2 id="titulo-form" class="formulario-producto__titulo">Nuevo producto</h2>
+        <div class="formulario-producto__campos">
+            <div class="formulario-producto__campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre">
+                <span class="error" id="error-nombre"></span>
+            </div>
+            <div class="formulario-producto__campo">
+                <label for="descripcion">Descripción</label>
+                <input type="text" id="descripcion" name="descripcion">
+                <span class="error" id="error-descripcion"></span>
+            </div>
+            <div class="formulario-producto__campo">
+                <label for="precio">Precio (ARS)</label>
+                <input type="number" id="precio" name="precio" step="0.01" min="0">
+                <span class="error" id="error-precio"></span>
+            </div>
         </div>
-
-        <div>
-            <label for="descripcion">Descripción</label>
-            <input type="text" id="descripcion" name="descripcion">
-            <span class="error" id="error-descripcion"></span>
+        <div class="formulario-producto__botones">
+            <button type="submit" id="btn-guardar" class="boton boton--primario">Guardar</button>
+            <button type="button" id="btn-cancelar" class="boton">Cancelar</button>
         </div>
-
-        <div>
-            <label for="precio">Precio (ARS)</label>
-            <input type="number" id="precio" name="precio" step="0.01" min="0">
-            <span class="error" id="error-precio"></span>
-        </div>
-
-        <button type="submit" id="btn-guardar">Guardar</button>
-        <button type="button" id="btn-cancelar">Cancelar</button>
     </form>
 
     <p id="cargando">Cargando productos...</p>
 
-    <table id="tabla-productos" hidden>
+    <div class="tabla-productos__barra">
+        <button id="btn-nuevo" class="boton boton--primario" type="button">Nuevo producto</button>
+    </div>
+
+    <table id="tabla-productos" class="tabla-productos" hidden>
         <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio (ARS)</th>
-            <th>Precio (USD)</th>
-            <th>Acciones</th>
+        <tr class="tabla-productos__fila">
+            <th class="tabla-productos__cabecera">Nombre</th>
+            <th class="tabla-productos__cabecera">Descripción</th>
+            <th class="tabla-productos__cabecera">Precio (ARS)</th>
+            <th class="tabla-productos__cabecera">Precio (USD)</th>
+            <th class="tabla-productos__cabecera"></th>
         </tr>
         </thead>
         <tbody id="cuerpo-tabla"></tbody>
@@ -63,8 +69,8 @@
     <dialog id="modal-eliminar">
         <form method="dialog">
             <p id="texto-confirmar"></p>
-            <button value="cancelar" autofocus>Cancelar</button>
-            <button value="confirmar" class="peligro">Eliminar</button>
+            <button value="cancelar" autofocus class="boton">Cancelar</button>
+            <button value="confirmar" class="boton boton--peligro">Eliminar</button>
         </form>
     </dialog>
 </main>

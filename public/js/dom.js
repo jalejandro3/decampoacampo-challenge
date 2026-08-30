@@ -11,8 +11,9 @@ export const elementosLista = {
 
 export const elementosFormulario = {
     btnNuevo: document.getElementById('btn-nuevo'),
-    form: document.getElementById('form-producto'),
     btnCancelar: document.getElementById('btn-cancelar'),
+    btnGuardar: document.getElementById('btn-guardar'),
+    form: document.getElementById('form-producto'),
     tituloForm: document.getElementById('titulo-form'),
     inputNombre: document.getElementById('nombre'),
     inputDescripcion: document.getElementById('descripcion'),

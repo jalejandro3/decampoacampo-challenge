@@ -1,5 +1,6 @@
 import { listarProductos, crearProducto, eliminarProducto, obtenerProducto, actualizarProducto } from './api.js';
-import { elementosMensaje, elementosLista, elementosFormulario, elementosModal } from './dom/dom.js';
+import { elementosMensaje, elementosLista, elementosFormulario, elementosModal } from './dom.js';
+import { renderizarProductos } from './render.js';
 
 const { mensaje } = elementosMensaje;
 const { cargando, tabla, cuerpoTabla, sinProductos } = elementosLista;
@@ -8,15 +9,16 @@ const { modalEliminar, textoConfirmar } = elementosModal;
 
 let modoEdicion = null;
 
-const formateadorArs = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS'
-});
-
-const formateadorUsd = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-});
+function abrirFormulario(titulo, id, datos = { nombre: '', descripcion: '', precio: '' }) {
+    inputNombre.value = datos.nombre;
+    inputDescripcion.value = datos.descripcion;
+    inputPrecio.value = datos.precio;
+    modoEdicion = id;
+    tituloForm.textContent = titulo;
+    mensaje.hidden = true;
+    form.hidden = false;
+    inputNombre.focus();
+}
 
 function mostrarMensaje(texto) {
     mensaje.textContent = texto;
@@ -24,51 +26,12 @@ function mostrarMensaje(texto) {
 }
 
 function confirmarEliminacion(nombre) {
-    textoConfirmar.textContent = `¿Eliminar "${nombre}"?`;
+    textoConfirmar.textContent = `¿Seguro quieres eliminar "${nombre}"?`;
     modalEliminar.showModal();
     return new Promise(resolve => {
         modalEliminar.addEventListener('close', () => {
             resolve(modalEliminar.returnValue === 'confirmar');
         }, { once: true });
-    });
-}
-
-function renderizarProductos(productos) {
-    cuerpoTabla.replaceChildren();
-
-    productos.forEach(producto => {
-        const fila = document.createElement('tr');
-        fila.dataset.id = producto.id;
-
-        const celdaNombre = document.createElement('td');
-        celdaNombre.textContent = producto.nombre;
-
-        const celdaDescripcion = document.createElement('td');
-        celdaDescripcion.textContent = producto.descripcion;
-
-        const celdaArs = document.createElement('td');
-        celdaArs.textContent = formateadorArs.format(producto.precio);
-
-        const celdaUsd = document.createElement('td');
-        celdaUsd.textContent = formateadorUsd.format(producto.precio_usd);
-
-        const celdaAcciones = document.createElement('td');
-
-        const btnEditar = document.createElement('button');
-        btnEditar.textContent = 'Actualizar';
-        btnEditar.className = 'btn-editar';
-        btnEditar.dataset.id = producto.id;
-
-        const btnEliminar = document.createElement('button');
-        btnEliminar.textContent = 'Eliminar';
-        btnEliminar.className = 'btn-eliminar peligro';
-        btnEliminar.dataset.id = producto.id;
-        btnEliminar.dataset.nombre = producto.nombre;
-
-        celdaAcciones.append(btnEditar, btnEliminar);
-
-        fila.append(celdaNombre, celdaDescripcion, celdaArs, celdaUsd, celdaAcciones);
-        cuerpoTabla.append(fila);
     });
 }
 
@@ -92,56 +55,42 @@ async function cargarProductos() {
     }
 }
 
-cuerpoTabla.addEventListener('click', async (evento) => {
-    const boton = evento.target;
+async function eliminarDesdeTabla(id, nombre) {
+    const confirmado = await confirmarEliminacion(nombre);
+    if (!confirmado) return;
 
-    if (boton.classList.contains('btn-eliminar')) {
-        const id = boton.dataset.id;
-        const nombre = boton.dataset.nombre;
-
-        const confirmado = await confirmarEliminacion(nombre);
-        if (!confirmado) return;
-
-        try {
-            await eliminarProducto(id);
-            await cargarProductos();
-            mostrarMensaje('Producto eliminado correctamente.');
-        } catch (error) {
-            mostrarMensaje(error.message);
-        }
+    try {
+        await eliminarProducto(id);
+        await cargarProductos();
+        mostrarMensaje('Producto eliminado correctamente.');
+    } catch (error) {
+        mostrarMensaje(error.message);
     }
+}
 
-    if (boton.classList.contains('btn-editar')) {
-        const id = boton.dataset.id;
-
-        try {
-            const producto = await obtenerProducto(id);   // GET fresco (D2)
-            inputNombre.value = producto.nombre;
-            inputDescripcion.value = producto.descripcion;
-            inputPrecio.value = producto.precio;
-            modoEdicion = id;
-            tituloForm.textContent = 'Editar producto';
-            mensaje.hidden = true;
-            form.hidden = false;
-            inputNombre.focus();
-        } catch (error) {
-            mostrarMensaje(error.message);
-            await cargarProductos();
-        }
+async function editarDesdeTabla(id) {
+    try {
+        const producto = await obtenerProducto(id);
+        abrirFormulario('Editar producto', id, producto);
+    } catch (error) {
+        mostrarMensaje(error.message);
+        await cargarProductos();
     }
-});
+}
 
-btnNuevo.addEventListener('click', () => {
-    form.reset();
-    modoEdicion = null;
-    tituloForm.textContent = 'Nuevo producto';
-    mensaje.hidden = true;
-    form.hidden = false;
-    inputNombre.focus();
-});
-
+btnNuevo.addEventListener('click', () => abrirFormulario('Nuevo producto', null));
 btnCancelar.addEventListener('click', () => {
     form.hidden = true;
+});
+
+cuerpoTabla.addEventListener('click', async (evento) => {
+    const boton = evento.target;
+    if (boton.classList.contains('btn-eliminar')) {
+        eliminarDesdeTabla(boton.dataset.id, boton.dataset.nombre);
+    }
+    if (boton.classList.contains('btn-editar')) {
+        editarDesdeTabla(boton.dataset.id);
+    }
 });
 
 form.addEventListener('submit', async (evento) => {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\Http;
+namespace Tests\Unit\Http;
 
 use Jalejandro\DecampoacampoChallenge\Exception\DatoInvalidoException;
 use Jalejandro\DecampoacampoChallenge\Exception\DatoRequeridoException;

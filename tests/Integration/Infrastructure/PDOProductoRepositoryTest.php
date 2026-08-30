@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration\Infrastructure;
+namespace Tests\Integration\Infrastructure;
 
 use Jalejandro\DecampoacampoChallenge\Infrastructure\PDOProductoRepository;
 use Jalejandro\DecampoacampoChallenge\Model\Producto;

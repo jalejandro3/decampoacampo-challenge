@@ -1,10 +1,12 @@
 <?php
 
 use Dotenv\Dotenv;
+use Jalejandro\DecampoacampoChallenge\Application\ActualizarProducto;
 use Jalejandro\DecampoacampoChallenge\Application\CrearProducto;
 use Jalejandro\DecampoacampoChallenge\Application\EliminarProducto;
 use Jalejandro\DecampoacampoChallenge\Application\ListarProductos;
 use Jalejandro\DecampoacampoChallenge\Application\MostrarProducto;
+use Jalejandro\DecampoacampoChallenge\Http\ActualizarProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\CrearProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\EliminarProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\ListarProductosController;
@@ -32,9 +34,11 @@ $mostrarProducto = new MostrarProducto($config, $repositorio);
 $listarProductos = new ListarProductos($config, $repositorio);
 $eliminarProducto = new EliminarProducto($repositorio);
 $crearProducto = new CrearProducto($config, $repositorio);
+$actualizarProducto = new ActualizarProducto($config, $repositorio);
 
 $controllers = [
     CrearProductoController::class => new CrearProductoController($crearProducto),
+    ActualizarProductoController::class => new ActualizarProductoController($actualizarProducto),
     MostrarProductoController::class => new MostrarProductoController($mostrarProducto),
     EliminarProductoController::class => new EliminarProductoController($eliminarProducto),
     ListarProductosController::class => new ListarProductosController($listarProductos),

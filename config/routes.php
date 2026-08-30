@@ -1,5 +1,6 @@
 <?php
 
+use Jalejandro\DecampoacampoChallenge\Http\ActualizarProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\CrearProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\EliminarProductoController;
 use Jalejandro\DecampoacampoChallenge\Http\ListarProductosController;
@@ -11,6 +12,11 @@ $mostrarProductoRoute = new Route('/productos/{id}')
     ->setMethods(['GET'])
     ->setRequirements(['id' => '\d+'])
     ->setDefaults(['_controller' => MostrarProductoController::class]);
+
+$actualizarProductoRoute = new Route('/productos/{id}')
+    ->setMethods(['PUT'])
+    ->setRequirements(['id' => '\d+'])
+    ->setDefaults(['_controller' => ActualizarProductoController::class]);
 
 $eliminarProductoRoute = new Route('/productos/{id}')
     ->setMethods(['DELETE'])
@@ -28,6 +34,7 @@ $crearProductoRoute = new Route('/productos')
 $routes = new RouteCollection();
 
 $routes->add('mostrar_producto', $mostrarProductoRoute);
+$routes->add('actualizar_producto', $actualizarProductoRoute);
 $routes->add('eliminar_producto', $eliminarProductoRoute);
 $routes->add('listar_productos', $listarProductosRoute);
 $routes->add('crear_producto', $crearProductoRoute);

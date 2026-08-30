@@ -1,9 +1,9 @@
 # deCampoaCampo
 
-## Backend
-
 ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4)
 [![codecov](https://codecov.io/github/jalejandro3/decampoacampo-challenge/graph/badge.svg?token=GU8BUKSQB7)](https://codecov.io/github/jalejandro3/decampoacampo-challenge)
+
+## Backend
 
 API REST para la gestión de productos (CRUD), desarrollada en **PHP 8.4 nativo** (sin frameworks de aplicación), con arquitectura por capas, tests automatizados y contenerización con Docker.
 

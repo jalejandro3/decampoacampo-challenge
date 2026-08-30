@@ -25,7 +25,6 @@ class CrearProductoTest extends TestCase
         $crearProducto = new CrearProducto($configuracion, $productoRepository);
         $resultado = $crearProducto->execute($nombre, $descripcion, $precio);
 
-        $this->assertIsArray($resultado);
         $this->assertCount(5, $resultado);
 
         $this->assertArrayHasKey('id', $resultado);

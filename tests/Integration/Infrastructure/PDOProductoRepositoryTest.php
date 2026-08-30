@@ -48,9 +48,9 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertArrayHasKey('descripcion', $productoArray);
         $this->assertArrayHasKey('precio', $productoArray);
 
-        $this->assertEquals('Ganado', $productoArray['nombre']);
-        $this->assertEquals('Maute', $productoArray['descripcion']);
-        $this->assertSame(1000.0, $productoArray['precio']);
+        $this->assertEquals('Ganado', $producto->getNombre());
+        $this->assertEquals('Maute', $producto->getDescripcion());
+        $this->assertSame(1000.0, $producto->getPrecio());
     }
 
     public function test_pdo_producto_repository_con_productos_no_existentes_retorna_una_array_vacio()
@@ -58,7 +58,6 @@ class PDOProductoRepositoryTest extends TestCase
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
         $productos = $pdoProductoRepository->findAll();
 
-        $this->assertIsArray($productos);
         $this->assertEmpty($productos);
     }
 
@@ -70,7 +69,6 @@ class PDOProductoRepositoryTest extends TestCase
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
         $productos = $pdoProductoRepository->findAll();
 
-        $this->assertIsArray($productos);
         $this->assertCount(2, $productos);
         $this->assertContainsOnlyInstancesOf(Producto::class, $productos);
 

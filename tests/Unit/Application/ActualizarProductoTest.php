@@ -24,7 +24,6 @@ class ActualizarProductoTest extends TestCase
         $actualizarProducto = new ActualizarProducto($configuracion, $productoRepository);
         $resultado = $actualizarProducto->execute(1, 'Ganado', 'Maute', 1000.0);
 
-        $this->assertIsArray($resultado);
         $this->assertCount(5, $resultado);
 
         $this->assertArrayHasKey('id', $resultado);

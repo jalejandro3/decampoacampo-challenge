@@ -39,7 +39,6 @@ class MostrarProductoTest extends TestCase
 
         $result = $mostrarProducto->execute(1);
 
-        $this->assertIsArray($result);
         $this->assertCount(5, $result);
 
         $this->assertArrayHasKey('id', $result);

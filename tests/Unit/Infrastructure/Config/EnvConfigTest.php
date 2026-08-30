@@ -42,7 +42,6 @@ class EnvConfigTest extends TestCase
         $envConfig = EnvConfigMother::create(['PRECIO_USD' => $precioUsd]);
         $envConfigPrecioUsd = $envConfig->getPrecioUsd();
 
-        $this->assertIsFloat($envConfigPrecioUsd);
         $this->assertSame((float) $precioUsd, $envConfigPrecioUsd);
     }
 

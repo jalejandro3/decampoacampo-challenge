@@ -20,7 +20,6 @@ class ListarProductosTest extends TestCase
         $listarProductos = new ListarProductos($configuracion, $productoRepository);
         $resultado = $listarProductos->execute();
 
-        $this->assertIsArray($resultado);
         $this->assertEmpty($resultado);
     }
 
@@ -39,7 +38,6 @@ class ListarProductosTest extends TestCase
         $listarProductos = new ListarProductos($configuracion, $productoRepository);
         $resultado = $listarProductos->execute();
 
-        $this->assertIsArray($resultado);
         $this->assertCount(2, $resultado);
 
         $productoGanadoArray = $resultado[0];

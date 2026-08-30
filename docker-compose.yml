@@ -18,6 +18,8 @@ services:
       - "8080:80"
     depends_on:
       - mysql
+    volumes:
+      - ./public:/var/www/html/public
     environment:
       PRECIO_USD: ${PRECIO_USD}
       DB_HOST: ${DB_HOST}

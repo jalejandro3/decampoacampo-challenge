@@ -17,6 +17,31 @@
 
     <button id="btn-nuevo" type="button">Nuevo producto</button>
 
+    <form id="form-producto" hidden novalidate>
+        <h2 id="titulo-form">Nuevo producto</h2>
+
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre">
+            <span class="error" id="error-nombre"></span>
+        </div>
+
+        <div>
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" name="descripcion">
+            <span class="error" id="error-descripcion"></span>
+        </div>
+
+        <div>
+            <label for="precio">Precio (ARS)</label>
+            <input type="number" id="precio" name="precio" step="0.01" min="0">
+            <span class="error" id="error-precio"></span>
+        </div>
+
+        <button type="submit" id="btn-guardar">Guardar</button>
+        <button type="button" id="btn-cancelar">Cancelar</button>
+    </form>
+
     <p id="cargando">Cargando productos...</p>
 
     <table id="tabla-productos" hidden>

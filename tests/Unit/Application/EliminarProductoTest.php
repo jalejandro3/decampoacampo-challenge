@@ -25,12 +25,14 @@ class EliminarProductoTest extends TestCase
 
     public function test_eliminar_producto_con_producto_existente_no_arroja_exception()
     {
-        $productoRepository = $this->createStub(ProductoRepository::class);
-        $productoRepository->method('delete')->willReturn(true);
+        $productoRepository = $this->createMock(ProductoRepository::class);
+        $productoRepository
+            ->expects($this->once())
+            ->method('delete')
+            ->with(1)
+            ->willReturn(true);
 
         $eliminarProducto = new EliminarProducto($productoRepository);
         $eliminarProducto->execute(1);
-
-        $this->expectNotToPerformAssertions();
     }
 }

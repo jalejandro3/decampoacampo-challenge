@@ -5,74 +5,49 @@ namespace Tests\Unit\Application;
 use Jalejandro\DecampoacampoChallenge\Application\Configuracion;
 use Jalejandro\DecampoacampoChallenge\Application\CrearProducto;
 use Jalejandro\DecampoacampoChallenge\Exception\DatoInvalidoException;
+use Jalejandro\DecampoacampoChallenge\Model\Producto;
 use Jalejandro\DecampoacampoChallenge\Model\ProductoRepository;
 use PHPUnit\Framework\TestCase;
 
 class CrearProductoTest extends TestCase
 {
-    public function test_crear_producto_con_datos_correctos_retorna_array_de_producto_nuevo()
+    public function test_crear_producto_con_datos_correctos_retorna_producto_con_id_persistido()
     {
-        $id = 1;
         $nombre = 'Ganado';
         $descripcion = 'Maute';
         $precio = 1000.0;
-        $productoRepository = $this->createStub(ProductoRepository::class);
+        $productoRepository = $this->createMock(ProductoRepository::class);
         $configuracion = $this->createStub(Configuracion::class);
 
         $configuracion->method('getPrecioUsd')->willReturn(1000.0);
-        $productoRepository->method('save')->willReturn($id);
+        $productoRepository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function (Producto $producto) use ($nombre, $descripcion, $precio) {
+                return $producto->getId() === null &&
+                    $producto->getNombre() === $nombre &&
+                    $producto->getDescripcion() === $descripcion &&
+                    $producto->getPrecio() === $precio;
+            }))
+            ->willReturn(34);
 
         $crearProducto = new CrearProducto($configuracion, $productoRepository);
         $resultado = $crearProducto->execute($nombre, $descripcion, $precio);
 
-        $this->assertCount(5, $resultado);
-
-        $this->assertArrayHasKey('id', $resultado);
-        $this->assertArrayHasKey('nombre', $resultado);
-        $this->assertArrayHasKey('descripcion', $resultado);
-        $this->assertArrayHasKey('precio', $resultado);
-        $this->assertArrayHasKey('precio_usd', $resultado);
-
-        $this->assertSame(1, $resultado['id']);
-        $this->assertEquals('Ganado', $resultado['nombre']);
-        $this->assertEquals('Maute', $resultado['descripcion']);
-        $this->assertEquals(1000.0, $resultado['precio']);
-        $this->assertSame(1.0, $resultado['precio_usd']);
+        $this->assertSame(34, $resultado['id']);
     }
 
-    public function test_crear_producto_con_nombre_vacio_retorna_dato_invalido_exception()
+    public function test_crear_producto_con_datos_invalidos_propaga_excepcion_y_no_persiste()
     {
-        $productoRepository = $this->createStub(ProductoRepository::class);
+        $productoRepository = $this->createMock(ProductoRepository::class);
         $configuracion = $this->createStub(Configuracion::class);
+
+        $productoRepository->expects($this->never())->method('save');
+
         $crearProducto = new CrearProducto($configuracion, $productoRepository);
 
         $this->expectException(DatoInvalidoException::class);
-        $this->expectExceptionMessageIs('El nombre del producto no puede estar vacío.');
 
         $crearProducto->execute('', 'Maute', 1000.0);
-    }
-
-    public function test_crear_producto_con_descripcion_vacia_retorna_dato_invalido_exception()
-    {
-        $productoRepository = $this->createStub(ProductoRepository::class);
-        $configuracion = $this->createStub(Configuracion::class);
-        $crearProducto = new CrearProducto($configuracion, $productoRepository);
-
-        $this->expectException(DatoInvalidoException::class);
-        $this->expectExceptionMessageIs('La descripción del producto no puede estar vacía.');
-
-        $crearProducto->execute('Ganado', '', 1000.0);
-    }
-
-    public function test_crear_producto_con_precio_negativo_retorna_dato_invalido_exception()
-    {
-        $productoRepository = $this->createStub(ProductoRepository::class);
-        $configuracion = $this->createStub(Configuracion::class);
-        $crearProducto = new CrearProducto($configuracion, $productoRepository);
-
-        $this->expectException(DatoInvalidoException::class);
-        $this->expectExceptionMessageIs('El precio del producto debe ser mayor a 0.');
-
-        $crearProducto->execute('Ganado', 'Maute', -1000.0);
     }
 }

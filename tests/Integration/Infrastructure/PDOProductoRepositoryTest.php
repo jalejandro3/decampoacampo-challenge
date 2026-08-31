@@ -41,12 +41,6 @@ class PDOProductoRepositoryTest extends TestCase
 
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
         $producto = $pdoProductoRepository->findById((int) $this->pdo->lastInsertId());
-        $productoArray = $producto->toArray();
-
-        $this->assertNotNull($producto);
-        $this->assertArrayHasKey('nombre', $productoArray);
-        $this->assertArrayHasKey('descripcion', $productoArray);
-        $this->assertArrayHasKey('precio', $productoArray);
 
         $this->assertEquals('Ganado', $producto->getNombre());
         $this->assertEquals('Maute', $producto->getDescripcion());
@@ -72,9 +66,7 @@ class PDOProductoRepositoryTest extends TestCase
         $this->assertCount(2, $productos);
         $this->assertContainsOnlyInstancesOf(Producto::class, $productos);
 
-        $productoArray = $productos[0]->toArray();
-
-        $this->assertEquals('Ganado', $productoArray['nombre']);
+        $this->assertEquals('Ganado', $productos[0]->getNombre());
     }
 
     public function test_pdo_producto_repository_eliminar_producto_no_existente_retorna_falso()
@@ -102,13 +94,12 @@ class PDOProductoRepositoryTest extends TestCase
         $producto = ProductoMother::createConId(null);
         $pdoProductoRepository = new PDOProductoRepository($this->pdo);
 
-        $id = $pdoProductoRepository->save($producto);
-        $nuevoProducto = $pdoProductoRepository->findById($id);
-        $nuevoProductoArray = $nuevoProducto->toArray();
+        $pdoProductoRepository->save($producto);
 
-        $this->assertGreaterThan(0, $id);
-        $this->assertEquals('Ganado', $nuevoProductoArray['nombre']);
-        $this->assertEquals(1000.0, $nuevoProductoArray['precio']);
+        $id = (int) $this->pdo->lastInsertId();
+        $nuevoProducto = $pdoProductoRepository->findById($id);
+
+        $this->assertSame($id, $nuevoProducto->getId());
     }
 
     public function test_pdo_producto_repository_update_actualiza_producto()

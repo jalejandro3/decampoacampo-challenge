@@ -29,17 +29,9 @@ class ProductoTest extends TestCase
         ProductoMother::create(0.0);
     }
 
-    public function test_producto_creado_retorna_arreglo_con_valores_correctos()
+    public function test_producto_creado_retorna_valores_correctos()
     {
         $producto = ProductoMother::create();
-        $productoArray = $producto->toArray();
-
-        $this->assertCount(4, $productoArray);
-
-        $this->assertArrayHasKey('id', $productoArray);
-        $this->assertArrayHasKey('nombre', $productoArray);
-        $this->assertArrayHasKey('descripcion', $productoArray);
-        $this->assertArrayHasKey('precio', $productoArray);
 
         $this->assertEquals(1, $producto->getId());
         $this->assertEquals('Ganado', $producto->getNombre());
@@ -47,12 +39,11 @@ class ProductoTest extends TestCase
         $this->assertEquals(1000.0, $producto->getPrecio());
     }
 
-    public function test_producto_creado_con_id_nulo_retorna_arreglo_con_id_nulo()
+    public function test_producto_creado_con_id_nulo_retorna_id_nulo()
     {
         $producto = ProductoMother::createConId(null);
-        $productoArray = $producto->toArray();
 
-        $this->assertNull($productoArray['id']);
+        $this->assertNull($producto->getId());
     }
 
     public function test_producto_nombre_vacio_arroja_dato_invalido_exception()

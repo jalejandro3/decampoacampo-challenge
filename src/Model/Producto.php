@@ -48,14 +48,4 @@ readonly class Producto
     {
         return round($this->precio / $cotizacionDolar, 2);
     }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'nombre' => $this->nombre,
-            'descripcion' => $this->descripcion,
-            'precio' => $this->precio,
-        ];
-    }
 }

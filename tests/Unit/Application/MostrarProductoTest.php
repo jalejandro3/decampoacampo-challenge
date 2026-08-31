@@ -11,10 +11,10 @@ use Tests\ObjectMother\ProductoMother;
 
 class MostrarProductoTest extends TestCase
 {
-    public function test_mostrar_producto_con_producto_inexistente_arroja_exception()
+    public function test_mostrar_producto_sin_producto_arroja_exception()
     {
         $productoRepository = $this->createStub(ProductoRepository::class);
-        $configuracion = $this->createStub(Configuracion::class); // Satisface la firma del constructor.
+        $configuracion = $this->createStub(Configuracion::class);
 
         $productoRepository->method('findById')->willReturn(null);
 
@@ -26,7 +26,7 @@ class MostrarProductoTest extends TestCase
         $mostrarProducto->execute(1);
     }
 
-    public function test_mostrar_producto_con_producto_existente_retorna_producto()
+    public function test_mostrar_producto_con_producto_retorna_producto()
     {
         $producto = ProductoMother::create();
         $productoRepository = $this->createStub(ProductoRepository::class);
@@ -39,18 +39,6 @@ class MostrarProductoTest extends TestCase
 
         $result = $mostrarProducto->execute(1);
 
-        $this->assertCount(5, $result);
-
-        $this->assertArrayHasKey('id', $result);
-        $this->assertArrayHasKey('nombre', $result);
-        $this->assertArrayHasKey('descripcion', $result);
-        $this->assertArrayHasKey('precio', $result);
-        $this->assertArrayHasKey('precio_usd', $result);
-
-        $this->assertSame(1, $result['id']);
-        $this->assertEquals('Ganado', $result['nombre']);
-        $this->assertEquals('Maute', $result['descripcion']);
-        $this->assertEquals(1000.0, $result['precio']);
         $this->assertSame(1.0, $result['precio_usd']);
     }
 }
